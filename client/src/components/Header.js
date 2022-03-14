@@ -1,16 +1,16 @@
 import React from 'react';
 import '../style.css';
 
-const Title = () => {
+const Header = () => {
   return (
     <div
       className="ui sizer vertical segment center-text"
       style={{ marginBottom: '20px' }}>
       <div className="ui mid header" style={{ fontSize: '3em' }}>
-        Davmardle
+        davardle.io
       </div>
     </div>
   );
 };
 
-export default Title;
+export default Header;

@@ -1,11 +1,15 @@
 import React from 'react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
-import Title from './Title';
-import Table from './Table';
+import { Router, Route, Switch } from 'react-router-dom';
+import Header from './Header';
 import Footer from './Footer';
-import OnKeyboard from './OnKeyboard';
-import Modal from './Modal';
+import history from '../history';
 import { bigdick, smalldick } from '../info/Script';
+import Game from './Game';
+import OnKeyboard from './OnKeyboard';
+import Table from './Table';
+import TitleScreen from './TitleScreen';
+import JoinGame from './JoinGame';
 // import papaparse from 'papaparse';
 
 class App extends React.Component {
@@ -27,7 +31,7 @@ class App extends React.Component {
       ['', '', '', '', ''],
     ],
     guessedLetters: [],
-    targetWord: 'penis',
+    targetWord: 'phold',
     gameState: 'running',
     guessedWord: 0,
     guessedLetter: 0,
@@ -126,7 +130,7 @@ class App extends React.Component {
     });
   };
 
-  setColors = word => {
+  setColors = (word) => {
     let colorCopy = this.state.colors;
     let remaining = new Array(26).fill(0);
     let a = 'a'.charCodeAt(0);
@@ -164,7 +168,7 @@ class App extends React.Component {
     this.setState({});
   };
 
-  addLetter = value => {
+  addLetter = (value) => {
     // console.log(value, ' was pressed');
 
     if (this.state.guessedLetter > 4) {
@@ -203,49 +207,6 @@ class App extends React.Component {
       targetWord: smalldick[index],
     });
     console.log(smalldick[index]);
-
-    // let bigdick =
-    //   'https://raw.githubusercontent.com/ggilestro/playground/main/wordle_strategy/wordle_words_accepted.txt';
-
-    // let smalldick =
-    //   'https://raw.githubusercontent.com/ggilestro/playground/main/wordle_strategy/wordle_words.txt';
-
-    // let t = this;
-
-    // papaparse.parse(smalldick, {
-    //   download: true,
-    //   complete: async function (results) {
-    //     let arr = results.data;
-
-    //     for (var i = 0; i < arr.length; ++i) {
-    //       arr[i] = arr[i][0];
-    //     }
-
-    //     var index = Math.floor(Math.random() * arr.length);
-
-    //   t.setState({
-    //     bigDick: arr,
-    //     smallDick: arr,
-    //     targetWord: arr[index],
-    //   });
-    //   console.log(arr[index]);
-    // },
-    // });
-
-    // papaparse.parse(bigdick, {
-    //   download: true,
-    //   complete: async function (results) {
-    //     let arr = results.data;
-
-    //     for (var i = 0; i < arr.length; ++i) {
-    //       arr[i] = arr[i][0];
-    //     }
-
-    //     t.setState({
-    //       bigDick: t.state.bigDick + arr + ['ammar'] + ['david'],
-    //     });
-    //   },
-    // });
   };
 
   render() {
@@ -253,7 +214,7 @@ class App extends React.Component {
       <div>
         <KeyboardEventHandler
           handleKeys={['alphabetic', 'enter', 'backspace']}
-          onKeyEvent={key => {
+          onKeyEvent={(key) => {
             if (this.state.gameState === 'running') {
               if (key === 'enter') {
                 this.enterWord();
@@ -265,22 +226,32 @@ class App extends React.Component {
             }
           }}
         />
-        <Title />
-        <Modal
-          resetGame={this.resetGame}
-          targetWord={this.state.targetWord}
-          gameState={this.state.gameState}
-        />
-        <Table letters={this.state.letters} colors={this.state.colors} />
-        <OnKeyboard
-          enterWord={this.enterWord}
-          addLetter={this.addLetter}
-          deleteLetter={this.deleteLetter}
-          keyboard={this.state.keyboard}
-          bThemes={this.state.bThemes}
-          highlightBoard={this.state.gameState === 'running'}
-        />
-        <Footer />
+        <Router history={history}>
+          <Route path="/" render={() => <Header />} />
+          <Switch>
+            <Route path="/" exact render={() => <TitleScreen />} />
+            <Route
+              path="/game"
+              render={() => (
+                <Game
+                  letters={this.state.letters}
+                  colors={this.state.colors}
+                  enterWord={this.enterWord}
+                  addLetter={this.addLetter}
+                  deleteLetter={this.deleteLetter}
+                  keyboard={this.state.keyboard}
+                  bThemes={this.state.bThemes}
+                  highlightBoard={this.state.gameState === 'running'}
+                  resetGame={this.resetGame}
+                  targetWord={this.state.targetWord}
+                  gameState={this.state.gameState}
+                />
+              )}
+            />
+            <Route path="/join" exact render={() => <JoinGame />} />
+          </Switch>
+          <Route path="/" render={() => <Footer />} />
+        </Router>
       </div>
     );
   }

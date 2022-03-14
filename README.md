@@ -1,3 +1,1 @@
-Simple Wordle Clone.
-
-Allows for unlimited replays.
+Squabble with some improvements.
