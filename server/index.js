@@ -2,23 +2,24 @@ const express = require('express');
 const app = express();
 const socketio = require('socket.io');
 
+const { lobbyList } = require('./lobbies');
+
+app.use(express.json());
 // init express server
 // app.use(express.static(__dirname + '/public'));
-const expressServer = app.listen(0, 'localhost');
+const server = app.listen(9000);
 
 // init socket.io server by passing express server
-const io = socketio(expressServer);
+const io = socketio(server, {
+  cors: {
+    origin: '*',
+  },
+});
 
-// call func when a new socket connects
 io.on('connection', (socket) => {
-  socket.emit('messageFromServer', { data: 'Welcome to the server' });
-  socket.on('messageToServer', (dataFromClient) => {
-    console.log(dataFromClient);
+  socket.on('checkLobby', ({ pin }) => {
+    socket.emit('lobbyChecked', lobbyList.includes(pin));
   });
-  socket.join('level1');
-  socket
-    .to('level1')
-    .emit('joined', `${socket.id}: I have joined the level1 room`);
 });
 
 // io.of('/admin').on('connect', (socket) => {

@@ -30,7 +30,7 @@ class App extends React.Component {
     ],
     guessedLetters: [],
     targetWord: 'phold',
-    gameState: 'running',
+    gameState: 'menu', // running, won, lost, menu
     guessedWord: 0,
     guessedLetter: 0,
     bigDick: [],
