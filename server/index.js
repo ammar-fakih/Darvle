@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const socketio = require('socket.io');
+let Namespace = require('./Namespace');
 
 const { lobbyList } = require('./lobbies');
 
@@ -17,10 +18,17 @@ const io = socketio(server, {
 });
 
 io.on('connection', (socket) => {
+  socket.on("createLobby", () => {
+    
+  })
+
+
   socket.on('checkLobby', ({ pin }) => {
     socket.emit('lobbyChecked', lobbyList.includes(pin));
   });
 });
+
+
 
 // io.of('/admin').on('connect', (socket) => {
 //   console.log('user connected to admin');

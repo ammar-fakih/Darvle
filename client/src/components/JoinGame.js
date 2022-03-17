@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import socket from '../utilities/socketConnection';
+import history from '../utilities/history';
 
-const JoinGame = () => {
-  const [pin, setPin] = useState('');
+const JoinGame = ({ changePIN }) => {
+  const [term, setTerm] = useState('');
   const [popUp, setPopUp] = useState('');
 
   const handleClick = () => {
-    socket.emit('checkLobby', { pin: pin });
+    socket.emit('checkLobby', { pin: term });
     socket.on('lobbyChecked', (resp) => {
       if (resp) {
         console.log('The lobby is available');
+        changePIN(term);
         setPopUp('');
+        history.push(`/game/${term}`);
       } else {
         setPopUp('Please enter a valid PIN');
       }
@@ -25,10 +28,11 @@ const JoinGame = () => {
             <input
               type="text"
               placeholder="Game PIN"
-              value={pin}
+              value={term}
               onChange={(e) => {
-                setPin(e.target.value);
+                setTerm(e.target.value);
               }}
+              onSubmit={handleClick}
             />
           </div>
         </div>

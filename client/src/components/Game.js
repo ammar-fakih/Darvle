@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from './Modal';
 import OnKeyboard from './OnKeyboard';
 import Table from './Table';
@@ -16,6 +16,8 @@ const Game = ({
   targetWord,
   gameState,
 }) => {
+
+  
   return (
     <div>
       <Table letters={letters} colors={colors} />

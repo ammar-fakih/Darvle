@@ -8,7 +8,7 @@ import { bigdick, smalldick } from '../info/Script';
 import Game from './Game';
 import TitleScreen from './TitleScreen';
 import JoinGame from './JoinGame';
-import socket from '../utilities/socketConnection';
+import InGame from './InGame';
 
 class App extends React.Component {
   state = {
@@ -30,25 +30,28 @@ class App extends React.Component {
     ],
     guessedLetters: [],
     targetWord: 'phold',
-    gameState: 'menu', // running, won, lost, menu
+    gameState: 'menu', // running, menu, lobby, won, lost
     guessedWord: 0,
     guessedLetter: 0,
     bigDick: [],
     smallDick: [],
     buttonAttributes: [],
     bThemes: [],
+    currentPIN: '',
   };
 
   componentDidMount = () => {
-    this.processDicks();
-    // this.setState({smallDick: dicts.smalldick, bigDick: dicts.bigdick})
-    let bThemesCopy = [];
+    // this.processDicks();
+    // let bThemesCopy = [];
+    // for (var bi = 0; bi < 26; ++bi) {
+    //   let c = String.fromCharCode('a'.charCodeAt(0) + bi);
+    //   bThemesCopy.push({ class: 'nothing', buttons: c });
+    // }
+    // this.setState({ bThemes: bThemesCopy });
+  };
 
-    for (var bi = 0; bi < 26; ++bi) {
-      let c = String.fromCharCode('a'.charCodeAt(0) + bi);
-      bThemesCopy.push({ class: 'nothing', buttons: c });
-    }
-    this.setState({ bThemes: bThemesCopy });
+  changePIN = (pin) => {
+    this.setState({ currentPIN: pin });
   };
 
   resetGame = async () => {
@@ -232,7 +235,7 @@ class App extends React.Component {
               exact
               render={() => <TitleScreen />}
             />
-            <Route
+            {/* <Route
               path="/game"
               render={() => (
                 <Game
@@ -249,8 +252,34 @@ class App extends React.Component {
                   gameState={this.state.gameState}
                 />
               )}
+            /> */}
+            <Route
+              path="/join"
+              exact
+              render={() => <JoinGame changePIN={this.changePIN} />}
             />
-            <Route path="/join" exact render={() => <JoinGame />} />
+            <Route
+              path="/game/:pin"
+              exact
+              render={({ match }) => (
+                <InGame
+                  currentPIN={this.state.currentPIN}
+                  changePIN={this.changePIN}
+                  letters={this.state.letters}
+                  colors={this.state.colors}
+                  enterWord={this.enterWord}
+                  addLetter={this.addLetter}
+                  deleteLetter={this.deleteLetter}
+                  keyboard={this.state.keyboard}
+                  bThemes={this.state.bThemes}
+                  highlightBoard={this.state.gameState === 'running'}
+                  resetGame={this.resetGame}
+                  targetWord={this.state.targetWord}
+                  gameState={this.state.gameState}
+                  match={match}
+                />
+              )}
+            />
           </Switch>
           <Route path="/" render={() => <Footer />} />
         </Router>

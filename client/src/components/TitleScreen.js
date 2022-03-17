@@ -1,8 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../style.css';
+import socket from '../utilities/socketConnection';
 
 const TitleScreen = () => {
+  const createGame = () => {
+    // TODO: pass user data
+    socket.emit('createLobby');
+  };
+
   return (
     <div
       className="d-flex align-items-center flex-column"
@@ -13,9 +19,12 @@ const TitleScreen = () => {
         </Link>
       </div>
       <div>
-        <Link to="/" className="ui yellow button massive button-width">
+        <button
+          to="/"
+          className="ui yellow button massive button-width"
+          onClick={createGame}>
           Create a Game
-        </Link>
+        </button>
       </div>
       <div className="mt-auto">
         <Link to="/" className="ui grey button massive button-width">
