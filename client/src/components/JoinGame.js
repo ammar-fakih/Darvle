@@ -1,7 +1,5 @@
 import React from 'react';
-import io from "socket.io-client";
 
-let socket;
 
 const JoinGame = () => {
   return (
@@ -15,7 +13,10 @@ const JoinGame = () => {
         <div className="content">
           <button
             style={{ width: '100%' }}
-            className="ui positive button huge center floated">
+            className="ui positive button huge center floated"
+            onClick={() => {
+              window.alert('FUCK YOU');
+            }}>
             Enter
           </button>
         </div>

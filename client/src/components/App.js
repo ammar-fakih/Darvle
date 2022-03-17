@@ -3,14 +3,12 @@ import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { Router, Route, Switch } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
-import history from '../history';
+import history from '../utilities/history';
 import { bigdick, smalldick } from '../info/Script';
 import Game from './Game';
-import OnKeyboard from './OnKeyboard';
-import Table from './Table';
 import TitleScreen from './TitleScreen';
 import JoinGame from './JoinGame';
-// import papaparse from 'papaparse';
+import socket from '../utilities/socketConnection';
 
 class App extends React.Component {
   state = {
@@ -229,7 +227,11 @@ class App extends React.Component {
         <Router history={history}>
           <Route path="/" render={() => <Header />} />
           <Switch>
-            <Route path="/" exact render={() => <TitleScreen />} />
+            <Route
+              path={['/', '/Davmardle']}
+              exact
+              render={() => <TitleScreen />}
+            />
             <Route
               path="/game"
               render={() => (

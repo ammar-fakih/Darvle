@@ -1,26 +1,27 @@
 const express = require('express');
-const socket = require('socket.io');
 const app = express();
-const cors = require('cors');
+const socketio = require('socket.io');
 
-app.use(cors());
-app.use(express.json());
+// init express server
+// app.use(express.static(__dirname + '/public'));
+const expressServer = app.listen(0, 'localhost');
 
-const server = app.listen('3001', () => {
-  console.log('Server Running on Port 3001');
-});
+// init socket.io server by passing express server
+const io = socketio(expressServer);
 
-io = socket(server);
-
+// call func when a new socket connects
 io.on('connection', (socket) => {
-  console.log(socket.id);
-
-  socket.on('join_room', (data) => {
-    socket.join(data);
-    console.log("user joined room" + data)
-  })
-
-  socket.on('disconnect', () => {
-    console.log("user disconnected")
-  })
+  socket.emit('messageFromServer', { data: 'Welcome to the server' });
+  socket.on('messageToServer', (dataFromClient) => {
+    console.log(dataFromClient);
+  });
+  socket.join('level1');
+  socket
+    .to('level1')
+    .emit('joined', `${socket.id}: I have joined the level1 room`);
 });
+
+// io.of('/admin').on('connect', (socket) => {
+//   console.log('user connected to admin');
+//   io.of('/admin').emit('welcome', 'Welcome to admin channel!');
+// });

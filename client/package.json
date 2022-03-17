@@ -21,7 +21,6 @@
     "react-simple-keyboard": "^3.4.78",
     "simple-keyboard": "^3.4.61",
     "socket.io-client": "^4.4.1",
-    "swipe-keyboard": "^2.2.388",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
