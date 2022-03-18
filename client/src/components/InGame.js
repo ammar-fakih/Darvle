@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import socket from '../utilities/socketConnection';
+import io from 'socket.io-client';
+import Lobby from './Lobby';
 import history from '../utilities/history';
 
 const InGame = ({
@@ -17,15 +18,26 @@ const InGame = ({
   currentPIN,
   changePIN,
   match,
+  setGameState,
 }) => {
   useEffect(() => {
     changePIN(match.params.pin);
   }, []);
   useEffect(() => {
-    console.log(currentPIN);
+    let socket = io(`localhost:9000/${currentPIN}`);
+    socket.on('gameInfo', (data) => {
+      console.log('data: ', data);
+      setGameState(data.gameState);
+    });
   }, [currentPIN]);
-
-  return <div>ingame, pin:</div>;
+  if (gameState === 'lobby') {
+    return (
+      <React.Fragment>
+        <Lobby currentPIN={currentPIN}/>
+      </React.Fragment>
+    );
+  }
+  return <div>ingame, pin: {currentPIN}</div>;
 };
 
 export default InGame;

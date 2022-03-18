@@ -1,12 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../style.css';
+import history from '../utilities/history';
 import socket from '../utilities/socketConnection';
 
 const TitleScreen = () => {
   const createGame = () => {
     // TODO: pass user data
     socket.emit('createLobby');
+    socket.on('lobbyCreated', (pin) => {
+      history.push(`game/${pin}`);
+    });
   };
 
   return (

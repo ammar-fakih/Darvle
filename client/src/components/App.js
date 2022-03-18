@@ -54,6 +54,10 @@ class App extends React.Component {
     this.setState({ currentPIN: pin });
   };
 
+  setGameState = (newGameState) => {
+    this.setState({ gameState: newGameState });
+  };
+
   resetGame = async () => {
     let bThemesCopy = [];
 
@@ -276,6 +280,7 @@ class App extends React.Component {
                   resetGame={this.resetGame}
                   targetWord={this.state.targetWord}
                   gameState={this.state.gameState}
+                  setGameState={this.setGameState}
                   match={match}
                 />
               )}

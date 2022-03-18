@@ -1,1 +1,2 @@
-exports.lobbyList = ['abc'];
+let Lobby = require('./Namespace');
+exports.lobbyList = {};

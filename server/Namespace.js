@@ -1,10 +1,9 @@
-class Namespace{
-  constructor(pin, gameState, playerStates, targetWords){
-    this.pin = pin;
+class Lobby{
+  constructor(gameState, playerStates, targetWords){
     this.gameState = gameState;
     this.playerStates = playerStates;
     this.targetWords = targetWords;
   }
 }
 
-module.exports = Namespace;
+module.exports = Lobby;
