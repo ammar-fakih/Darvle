@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import '../style.css';
 import history from '../utilities/history';
 import socket from '../utilities/socketConnection';
@@ -7,8 +8,20 @@ import socket from '../utilities/socketConnection';
 const TitleScreen = () => {
   const createGame = () => {
     // TODO: pass user data
-    socket.emit('createLobby');
+    if (!Cookies.get('userID')) {
+      socket.emit('reqUserID');
+
+      socket.on('returnUserID', (id) => {
+        Cookies.set('userID', id);
+
+        socket.emit('createLobby', Cookies.get('userID'));
+      });
+      console.log(Cookies.getuserId)
+    }
+
+    socket.emit('createLobby', Cookies.get('userID'));
     socket.on('lobbyCreated', (pin) => {
+      console.log('lobbyCreated: ', pin);
       history.push(`game/${pin}`);
     });
   };
@@ -24,7 +37,6 @@ const TitleScreen = () => {
       </div>
       <div>
         <button
-          to="/"
           className="ui yellow button massive button-width"
           onClick={createGame}>
           Create a Game

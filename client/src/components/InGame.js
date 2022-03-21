@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+import socket from '../utilities/socketConnection';
 import Lobby from './Lobby';
+import Cookies from 'js-cookie';
 import history from '../utilities/history';
 
 const InGame = ({
@@ -19,21 +20,24 @@ const InGame = ({
   changePIN,
   match,
   setGameState,
+  playerNames,
+  setPlayerNames,
 }) => {
+  console.log('currentPIN: ', currentPIN);
+
   useEffect(() => {
     changePIN(match.params.pin);
   }, []);
   useEffect(() => {
-    let socket = io(`localhost:9000/${currentPIN}`);
     socket.on('gameInfo', (data) => {
-      console.log('data: ', data);
       setGameState(data.gameState);
+      setPlayerNames(data.playerNames);
     });
   }, [currentPIN]);
   if (gameState === 'lobby') {
     return (
       <React.Fragment>
-        <Lobby currentPIN={currentPIN}/>
+        <Lobby playerNames={playerNames} currentPIN={currentPIN} />
       </React.Fragment>
     );
   }

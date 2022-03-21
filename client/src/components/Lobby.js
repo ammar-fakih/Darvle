@@ -1,6 +1,7 @@
 import React from 'react';
 
-const Lobby = ({ currentPIN }) => {
+const Lobby = ({ currentPIN, playerNames }) => {
+  console.log(playerNames)
   return (
     <div>
       <div className="d-flex align-items-center flex-column">
@@ -22,7 +23,11 @@ const Lobby = ({ currentPIN }) => {
         <i className="spinner loading icon" />
         Waiting for players
       </div>
-      <div>{/*// TODO: add foreach that populates lobby player list */}</div>
+      <ul>
+        {playerNames.map((name) => {
+          return <li>{name}</li>;
+        })}
+      </ul>
     </div>
   );
 };
